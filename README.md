@@ -21,11 +21,11 @@ This repo does the following:
 7. Configure Boundary to allow access to resources in the public network.
 8. Create all the requisite Vault policies
 
-###NOTE: 
-> **Note:**The fact that this repo has a server resource residing in an public subnet and therefore having a public IP attached is not supposed to mimic a production environment. This is purely to demonstrate the integration between Boundary and Vault.
+NOTE: 
+> The fact that this repo has a server resource residing in an public subnet and therefore having a public IP attached is not supposed to mimic a production environment. This is purely to demonstrate the integration between Boundary and Vault.
 
-###NOTE:
-> **Note:**Due to the current limitation in the Boundary Terraform provider, once you have created the HCPb storage bucket after the first `terraform apply` you need to comment out the code in the `hcpb-storage-bucket.tf` file and change the `storage_bucket_id` attribute in the `boundary_target aws` resource in the `boundary-config.tf` file, to the ID of the storage bucket after it's created. This can be found in the Boundary admin UI. The reason for this is that upon a `terraform destroy`, the provider cannot successfully remove the `boundary_storage_bucket` resource and will error. You can remove this manually via the CLI if you wish.
+IMPORTANT:
+> Due to the current limitation in the Boundary Terraform provider, once you have created the HCPb storage bucket after the first `terraform apply` you need to comment out the code in the `hcpb-storage-bucket.tf` file and change the `storage_bucket_id` attribute in the `boundary_target aws` resource in the `boundary-config.tf` file, to the ID of the storage bucket after it's created. This can be found in the Boundary admin UI. The reason for this is that upon a `terraform destroy`, the provider cannot successfully remove the `boundary_storage_bucket` resource and will error. You can remove this manually via the CLI if you wish.
 
 Your HCP Boundary and Vault Clusters needs to be created prior to executing the Terraform code. For people new to HCP, a trial can be utilised, which will give $50 credit to try, which is ample to test this solution.
 
