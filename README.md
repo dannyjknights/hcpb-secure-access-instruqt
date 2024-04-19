@@ -32,6 +32,7 @@ IMPORTANT:
 > Due to the current limitation in the Boundary Terraform provider, once you have created the HCPb storage bucket after the first `terraform apply`, you need to do the following:
 > 1. Comment out the code in the `hcpb-storage-bucket.tf` file.
 > 2. Change the `storage_bucket_id` attribute in the `boundary_target aws` resource in the `boundary-config.tf` file to the ID of the storage bucket after it's created. (This can be found in the Boundary admin UI.)
+
 > The reason for this is that upon a `terraform destroy`, the provider cannot successfully remove the `boundary_storage_bucket` resource and will error. You can remove this manually via the CLI if you wish.
 
 Your HCP Boundary and Vault Clusters needs to be created prior to executing the Terraform code. For people new to HCP, a trial can be utilised, which will give $50 credit to try, which is ample to test this solution.
