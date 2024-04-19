@@ -4,9 +4,9 @@ data "http" "current" {
 }
 
 # These SG rules need tidying up!
-resource "aws_security_group" "static_target_sg" {
-  name        = "SG for Boundary Public Static Target"
-  description = "SG for Boundary Public Static Target"
+resource "aws_security_group" "allow_all" {
+  name        = "Lazy allow all"
+  description = "Allow all - DEMO PURPOSES"
   vpc_id      = aws_vpc.boundary_db_demo_vpc.id
 
   ingress {

@@ -1,40 +1,3 @@
-#Boundary config for the Postgres DB target
-resource "boundary_host_catalog_static" "db_host_catalog" {
-  scope_id = boundary_scope.project.id
-}
-
-resource "boundary_host_static" "postgres_host" {
-  type            = "static"
-  name            = "Postgres Host"
-  address         = aws_db_instance.boundary_demo.address
-  host_catalog_id = boundary_host_catalog_static.db_host_catalog.id
-}
-
-resource "boundary_host_set_static" "db_static_host_set" {
-  name            = "Postgres Static Host Set"
-  host_catalog_id = boundary_host_catalog_static.db_host_catalog.id
-
-  host_ids = [boundary_host_static.postgres_host.id]
-}
-
-resource "boundary_target" "dba" {
-  type                     = "tcp"
-  name                     = "RDS DBA Access"
-  description              = "RDS DBA Permissions"
-  egress_worker_filter     = " \"sm-ingress-upstream-worker1\" in \"/tags/type\" "
-  scope_id                 = boundary_scope.project.id
-  session_connection_limit = 3600
-  default_port             = 5432
-  host_source_ids = [
-    boundary_host_set_static.db_static_host_set.id
-  ]
-
-  brokered_credential_source_ids = [
-    boundary_credential_library_vault.vault_cred_lib.id
-  ]
-}
-
-
 # Boundary config for the EC2 target
 resource "boundary_host_catalog_plugin" "aws_plugin" {
   name        = "AWS Catalogue"
@@ -52,7 +15,7 @@ resource "boundary_host_catalog_plugin" "aws_plugin" {
   })
 }
 
-resource "boundary_host_set_plugin" "aws-db" {
+resource "boundary_host_set_plugin" "aws_db" {
   name                  = "AWS DB Host Set Plugin"
   host_catalog_id       = boundary_host_catalog_plugin.aws_plugin.id
   preferred_endpoints   = ["cidr:0.0.0.0/0"]
@@ -60,7 +23,7 @@ resource "boundary_host_set_plugin" "aws-db" {
   sync_interval_seconds = 30
 }
 
-resource "boundary_host_set_plugin" "aws-dev" {
+resource "boundary_host_set_plugin" "aws_dev" {
   name                  = "AWS Dev Host Set Plugin"
   host_catalog_id       = boundary_host_catalog_plugin.aws_plugin.id
   preferred_endpoints   = ["cidr:0.0.0.0/0"]
@@ -68,7 +31,7 @@ resource "boundary_host_set_plugin" "aws-dev" {
   sync_interval_seconds = 30
 }
 
-resource "boundary_host_set_plugin" "aws-prod" {
+resource "boundary_host_set_plugin" "aws_prod" {
   name                  = "AWS Prod Host Set Plugin"
   host_catalog_id       = boundary_host_catalog_plugin.aws_plugin.id
   preferred_endpoints   = ["cidr:0.0.0.0/0"]
@@ -79,19 +42,19 @@ resource "boundary_host_set_plugin" "aws-prod" {
 resource "boundary_target" "aws" {
   type                     = "ssh"
   name                     = "aws-ec2"
-  description              = "AWS EC2 Targets"
-  egress_worker_filter     = " \"sm-ingress-upstream-worker1\" in \"/tags/type\" "
+  description              = "AWS EC2 Target"
+  egress_worker_filter     = " \"self-managed-aws-worker\" in \"/tags/type\" "
   scope_id                 = boundary_scope.project.id
   session_connection_limit = -1
   default_port             = 22
   default_client_port      = 50505
   host_source_ids = [
-    boundary_host_set_plugin.aws-db.id,
-    boundary_host_set_plugin.aws-dev.id,
-    boundary_host_set_plugin.aws-prod.id,
+    boundary_host_set_plugin.aws_db.id,
+    boundary_host_set_plugin.aws_dev.id,
+    boundary_host_set_plugin.aws_prod.id,
   ]
   enable_session_recording                   = true
-  storage_bucket_id                          = boundary_storage_bucket.boundary_storage_bucket.id
+  storage_bucket_id                          = "sb_XHhqopMfHC"
   injected_application_credential_source_ids = [boundary_credential_library_vault_ssh_certificate.vault_ssh_cert.id]
 }
 
@@ -106,5 +69,4 @@ resource "boundary_policy_storage" "strict_storage_policy" {
 resource "boundary_scope_policy_attachment" "policy_attachment" {
   policy_id = boundary_policy_storage.strict_storage_policy.id
   scope_id  = boundary_scope.org.id
-
 }

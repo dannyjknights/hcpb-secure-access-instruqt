@@ -17,7 +17,7 @@ resource "aws_instance" "boundary_public_target" {
 
 resource "aws_network_interface" "boundary_public_target_ni" {
   subnet_id               = aws_subnet.boundary_db_demo_subnet.id
-  security_groups         = [aws_security_group.static_target_sg.id]
+  security_groups         = [aws_security_group.allow_all.id]
   private_ip_list_enabled = false
 }
 

@@ -27,20 +27,10 @@ variable "aws_region" {
   default = "eu-west-2"
 }
 
-variable "private_vpc_cidr" {
-  type        = string
-  description = "The Private CIDR range to assign to the VPC"
-}
-
 variable "aws_vpc_cidr" {
   type        = string
   description = "The AWS Region CIDR range to assign to the VPC"
 }
-
-# variable "private_subnet_cidr" {
-#   type        = string
-#   description = "The Private CIDR range to assign to the Private subnet"
-# }
 
 variable "aws_subnet_cidr" {
   type = string
@@ -51,14 +41,12 @@ variable "aws_subnet_cidr2" {
 }
 
 variable "availability_zone" {
-  type        = string
-  description = "EU West 2B within AWS to deploy the resources"
-  default     = "eu-west-2b"
+  type = string
 }
 
 variable "availability_zone2" {
-  type    = string
-  default = "eu-west-2c"
+  description = "Second AZ for RDS deployment"
+  type        = string
 }
 
 variable "vault_addr" {
@@ -66,10 +54,6 @@ variable "vault_addr" {
 }
 
 variable "vault_token" {
-  type = string
-}
-
-variable "boundary_vault_token" {
   type = string
 }
 
@@ -85,24 +69,6 @@ variable "db_name" {
   type = string
 }
 
-variable "instances" {
-  default = [
-    "boundary-1-dev",
-    # "boundary-2-dev",
-    # "boundary-3-production",
-    # "boundary-4-production"
-  ]
-}
-
-variable "vm_tags" {
-  default = [
-    { "Name" : "boundary-1-dev", "service-type" : "database", "application" : "dev" },
-    # { "Name" : "boundary-2-dev", "service-type" : "database", "application" : "dev" },
-    # { "Name" : "boundary-3-production", "service-type" : "database", "application" : "production" },
-    # { "Name" : "boundary-4-production", "service-type" : "database", "application" : "production" }
-  ]
-}
-
 variable "s3_bucket_name" {
   description = "Name of the S3 bucket"
   type        = string
@@ -116,4 +82,14 @@ variable "s3_bucket_name_tags" {
 variable "s3_bucket_env_tags" {
   type        = string
   description = "Environment tag to associate to the S3 Bucket"
+}
+
+variable "rdp_admin_pass" {
+  type        = string
+  description = "The password to set on the windows target for the admin user"
+}
+
+variable "rdp_admin_username" {
+  type        = string
+  description = "The admin username for RDP target"
 }

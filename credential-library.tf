@@ -35,5 +35,19 @@ resource "boundary_credential_library_vault_ssh_certificate" "vault_ssh_cert" {
   credential_store_id = boundary_credential_store_vault.vault_cred_store.id
   path                = "ssh-client-signer/sign/boundary-client"
   username            = "ec2-user"
-  //username = "danny"
+}
+
+//Credential store for Boundary
+resource "boundary_credential_store_static" "boundary_cred_store" {
+  name        = "boundary-credential-store"
+  description = "Boundary Credential Store"
+  scope_id    = boundary_scope.project.id
+}
+
+//Static Credentials for Boundary credential store
+resource "boundary_credential_username_password" "rdp_userpass" {
+  credential_store_id = boundary_credential_store_static.boundary_cred_store.id
+  password            = var.rdp_admin_pass
+  username            = var.rdp_admin_username
+
 }

@@ -60,7 +60,7 @@ locals {
     recording_storage_path = "/etc/boundary.d/sessionrecord"
     controller_generated_activation_token = "${boundary_worker.self_managed_pki_worker.controller_generated_activation_token}"
     tags {
-      type = ["sm-ingress-upstream-worker1"]
+      type = ["self-managed-aws-worker"]
     }
   }
 WORKER_HCL_CONFIG

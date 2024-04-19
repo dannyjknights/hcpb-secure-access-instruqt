@@ -4,7 +4,11 @@
 
 ## Overview
 
-This repo demonstrates secure access to and EC2 instance and an RDS database in AWS using HashiCorp Boundary. For connectivity to the EC2 instance, we leverage HashiCorp Vault and the application injected credentials feature to create ephemeral, signed SSH certifcates and have Boundary inject that into the session without any human intervention. For connectivity to the RDS instance, again we leverage HashiCorp Vault, but this time we demonstrate brokered credentials to the end user. These DB credentials are ephemeral and have a strict TTL.
+This repo demonstrates secure access to an EC2 instance, an RDS database and a Windows Server in AWS using HashiCorp Boundary. 
+
+* For connectivity to the EC2 instance, we leverage HashiCorp Vault and the application injected credentials feature to create ephemeral, signed SSH certifcates and have Boundary inject that into the session without any human intervention.
+* For connectivity to the RDS instance, again we leverage HashiCorp Vault, but this time we demonstrate brokered credentials to the end user. These DB credentials are ephemeral and have a strict TTL.
+* For connectivity to the Windows Server, we leverage Boundary's native credential store where we will brokered static credential to the end user for the RDP session.
 
 For traceability and accountability, the EC2 instance is configured to enable SSH Session Recording.
 
@@ -12,20 +16,23 @@ For traceability and accountability, the EC2 instance is configured to enable SS
 
 This repo does the following:
 
-1. Configure HCP Boundary.
-2. Configure HCP Vault.
+1. Configures HCP Boundary.
+2. Configures HCP Vault.
 3. Deploy a Boundary Worker in a public network.
 4. Establish a connection between the Boundary Controller and the Boundary Worker.
-5. Deploy a server instance in a public subnet and to trust Vault as the CA.
-6. Deploy an RDS instance in a public subnet
-7. Configure Boundary to allow access to resources in the public network.
-8. Create all the requisite Vault policies
+5. Deploy an EC2 server instance in a public subnet and is configured to trust Vault as the CA.
+6. Deploy an RDS instance in a public subnet.
+7. Deploy a Windows Server VM in a public subnet.
+
 
 NOTE: 
-> The fact that this repo has a server resource residing in an public subnet and therefore having a public IP attached is not supposed to mimic a production environment. This is purely to demonstrate the integration between Boundary and Vault.
+> The fact that this repo deploys into a public subnet and therefore having a public IP attached to the targets is not supposed to mimic a production environment. This is purely to demonstrate some of the features in Boundary.
 
 IMPORTANT:
-> Due to the current limitation in the Boundary Terraform provider, once you have created the HCPb storage bucket after the first `terraform apply` you need to comment out the code in the `hcpb-storage-bucket.tf` file and change the `storage_bucket_id` attribute in the `boundary_target aws` resource in the `boundary-config.tf` file, to the ID of the storage bucket after it's created. This can be found in the Boundary admin UI. The reason for this is that upon a `terraform destroy`, the provider cannot successfully remove the `boundary_storage_bucket` resource and will error. You can remove this manually via the CLI if you wish.
+> Due to the current limitation in the Boundary Terraform provider, once you have created the HCPb storage bucket after the first `terraform apply`, you need to do the following:
+> 1. Comment out the code in the `hcpb-storage-bucket.tf` file.
+> 2. Change the `storage_bucket_id` attribute in the `boundary_target aws` resource in the `boundary-config.tf` file to the ID of the storage bucket after it's created. (This can be found in the Boundary admin UI.)
+> The reason for this is that upon a `terraform destroy`, the provider cannot successfully remove the `boundary_storage_bucket` resource and will error. You can remove this manually via the CLI if you wish.
 
 Your HCP Boundary and Vault Clusters needs to be created prior to executing the Terraform code. For people new to HCP, a trial can be utilised, which will give $50 credit to try, which is ample to test this solution.
 
@@ -51,3 +58,5 @@ cloud"
 - `s3_bucket_name`:                  = "s3-bucket-name"
 - `s3_bucket_name_tags`:             = "session-recording"
 - `s3_bucket_env_tags`:              = "boundary"
+- `rdp_admin_pass`:                  = "rdpadminpassword"
+- `rdp_admin_username`:              = "Administrator"
