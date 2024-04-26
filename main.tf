@@ -29,6 +29,9 @@ provider "aws" {
   region = "eu-west-2"
 }
 
+provider "vault" {
+}
+
 # Declare the provider for the HashiCorp Boundary resource to be managed by Terraform
 provider "boundary" {
   # Use variables to provide values for the provider configuration
