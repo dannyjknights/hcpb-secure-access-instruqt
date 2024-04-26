@@ -3,8 +3,8 @@ resource "vault_mount" "postgres_database" {
   type        = "database"
   description = "Postgres DB Engine"
 
-  default_lease_ttl_seconds = 60
-  max_lease_ttl_seconds     = 60
+  default_lease_ttl_seconds = 600
+  max_lease_ttl_seconds     = 600
 }
 
 resource "vault_database_secret_backend_connection" "postgres" {
@@ -41,6 +41,6 @@ resource "vault_database_secret_backend_role" "dba" {
     "DROP OWNED BY \"{{name}}\";",
     "DROP ROLE IF EXISTS \"{{name}}\";"
   ]
-  default_ttl = 60
-  max_ttl     = 60
+  default_ttl = 600
+  max_ttl     = 600
 }
