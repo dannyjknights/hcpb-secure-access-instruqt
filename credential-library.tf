@@ -31,7 +31,7 @@ resource "boundary_credential_library_vault" "vault_cred_lib" {
 //Credential library for SSH injected credentials
 resource "boundary_credential_library_vault_ssh_certificate" "vault_ssh_cert" {
   name                = "ssh-certs"
-  description         = "Vault SSH Cert Library"
+  description         = "Generate a public/private key and sent to Vault to sign the SSH Certificate ready for application credential injection"
   credential_store_id = boundary_credential_store_vault.vault_cred_store.id
   path                = "ssh-client-signer/sign/boundary-client"
   username            = "ec2-user"
@@ -40,12 +40,14 @@ resource "boundary_credential_library_vault_ssh_certificate" "vault_ssh_cert" {
 //Credential store for Boundary
 resource "boundary_credential_store_static" "boundary_cred_store" {
   name        = "boundary-credential-store"
-  description = "Boundary Credential Store"
+  description = "Boundary Credential Store - Static credential store"
   scope_id    = boundary_scope.project.id
 }
 
 //Static Credentials for Boundary credential store
 resource "boundary_credential_username_password" "rdp_userpass" {
+  name                = "static-username-password"
+  description         = "A static credential library for username and password. These will be the credentials for the RDP target"
   credential_store_id = boundary_credential_store_static.boundary_cred_store.id
   password            = var.rdp_admin_pass
   username            = var.rdp_admin_username

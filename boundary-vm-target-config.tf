@@ -1,7 +1,7 @@
 # Boundary config for the EC2 target
 resource "boundary_host_catalog_plugin" "aws_plugin" {
   name        = "AWS Catalogue"
-  description = "AWS Host Catalogue"
+  description = "AWS Dynamic Host Catalogue"
   scope_id    = boundary_scope.project.id
   plugin_name = "aws"
   attributes_json = jsonencode({
@@ -15,27 +15,12 @@ resource "boundary_host_catalog_plugin" "aws_plugin" {
   })
 }
 
-resource "boundary_host_set_plugin" "aws_db" {
-  name                  = "AWS DB Host Set Plugin"
-  host_catalog_id       = boundary_host_catalog_plugin.aws_plugin.id
-  preferred_endpoints   = ["cidr:0.0.0.0/0"]
-  attributes_json       = jsonencode({ "filters" = "tag:service-type=database" })
-  sync_interval_seconds = 30
-}
-
 resource "boundary_host_set_plugin" "aws_dev" {
-  name                  = "AWS Dev Host Set Plugin"
+  name                  = "AWS Host Set Plugin - Dev"
+  description           = "AWS Host Set looking for EC2 resources with the tag 'dev'"
   host_catalog_id       = boundary_host_catalog_plugin.aws_plugin.id
   preferred_endpoints   = ["cidr:0.0.0.0/0"]
   attributes_json       = jsonencode({ "filters" = "tag:application=dev" })
-  sync_interval_seconds = 30
-}
-
-resource "boundary_host_set_plugin" "aws_prod" {
-  name                  = "AWS Prod Host Set Plugin"
-  host_catalog_id       = boundary_host_catalog_plugin.aws_plugin.id
-  preferred_endpoints   = ["cidr:0.0.0.0/0"]
-  attributes_json       = jsonencode({ "filters" = "tag:application=production" })
   sync_interval_seconds = 30
 }
 
@@ -47,11 +32,8 @@ resource "boundary_target" "aws" {
   scope_id                 = boundary_scope.project.id
   session_connection_limit = -1
   default_port             = 22
-  default_client_port      = 50505
   host_source_ids = [
-    boundary_host_set_plugin.aws_db.id,
     boundary_host_set_plugin.aws_dev.id,
-    boundary_host_set_plugin.aws_prod.id,
   ]
   # enable_session_recording                   = true
   # storage_bucket_id                          = aws_s3_bucket.boundary_session_recording_bucket.id
