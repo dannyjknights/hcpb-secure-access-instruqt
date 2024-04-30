@@ -1,13 +1,12 @@
 # Boundary config for the EC2 target
 resource "boundary_host_catalog_plugin" "aws_plugin" {
-  name        = "AWS Catalogue"
-  description = "AWS Dynamic Host Catalogue"
+  name        = "AWS EC2 Catalogue"
+  description = "AWS Dynamic Host Catalogue for EC2"
   scope_id    = boundary_scope.project.id
   plugin_name = "aws"
   attributes_json = jsonencode({
     "region" = "eu-west-2",
   "disable_credential_rotation" = true })
-
 
   secrets_json = jsonencode({
     "access_key_id"     = var.aws_access,

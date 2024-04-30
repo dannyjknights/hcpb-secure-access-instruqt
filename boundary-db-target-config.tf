@@ -1,20 +1,23 @@
 #Boundary config for the Postgres DB target
 resource "boundary_host_catalog_static" "db_host_catalog" {
-  scope_id = boundary_scope.project.id
+  scope_id    = boundary_scope.project.id
+  name        = "AWS RDS Catalogue"
+  description = "AWS RDS Host Catalogue"
 }
 
 resource "boundary_host_static" "postgres_host" {
   type            = "static"
   name            = "Postgres Host"
+  description     = "Static Host for a Postgres Target"
   address         = aws_db_instance.boundary_demo.address
   host_catalog_id = boundary_host_catalog_static.db_host_catalog.id
 }
 
 resource "boundary_host_set_static" "db_static_host_set" {
   name            = "Postgres Static Host Set"
+  description     = "Static Host Set for Postgres Targets"
   host_catalog_id = boundary_host_catalog_static.db_host_catalog.id
-
-  host_ids = [boundary_host_static.postgres_host.id]
+  host_ids        = [boundary_host_static.postgres_host.id]
 }
 
 resource "boundary_target" "dba" {
@@ -28,7 +31,6 @@ resource "boundary_target" "dba" {
   host_source_ids = [
     boundary_host_set_static.db_static_host_set.id
   ]
-
   brokered_credential_source_ids = [
     boundary_credential_library_vault.vault_cred_lib.id
   ]

@@ -37,12 +37,4 @@ data "cloudinit_config" "ssh_trusted_ca" {
     sudo systemctl restart sshd.service
     EOF
   }
-
-  part {
-    content_type = "text/x-shellscript"
-    content      = <<-EOF
-    sudo adduser admin_user
-    sudo adduser danny
-    EOF
-  }
 }

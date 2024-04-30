@@ -1,5 +1,6 @@
 resource "boundary_host_set_plugin" "aws_rdp" {
   name                  = "AWS Windows Host Set Plugin"
+  description           = "AWS Host Set looking for Windows VMs with the tag 'rdp-target'"
   host_catalog_id       = boundary_host_catalog_plugin.aws_plugin.id
   preferred_endpoints   = ["cidr:0.0.0.0/0"]
   attributes_json       = jsonencode({ "filters" = "tag:Name=rdp-target" })

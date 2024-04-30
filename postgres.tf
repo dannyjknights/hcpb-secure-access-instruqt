@@ -4,7 +4,6 @@ resource "aws_db_subnet_group" "boundary_demo_db_subnet_group" {
   tags = {
     "Name" = "Boundary DB Demo"
   }
-
 }
 
 resource "aws_db_instance" "boundary_demo" {
@@ -18,7 +17,6 @@ resource "aws_db_instance" "boundary_demo" {
   password               = var.db_password
   db_subnet_group_name   = aws_db_subnet_group.boundary_demo_db_subnet_group.name
   vpc_security_group_ids = [aws_security_group.rds.id]
-  //parameter_group_name   = aws_db_parameter_group.boundary_demo_db_subnet_group.name
-  publicly_accessible = true
-  skip_final_snapshot = true
+  publicly_accessible    = true
+  skip_final_snapshot    = true
 }
