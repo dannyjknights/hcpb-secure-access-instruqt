@@ -5,7 +5,7 @@ data "http" "current" {
 
 # These SG rules need tidying up!
 resource "aws_security_group" "allow_all" {
-  name        = "Lazy allow all"
+  name        = "Instruqt Allow All"
   description = "Allow all - DEMO PURPOSES"
   vpc_id      = aws_vpc.boundary_db_demo_vpc.id
 
@@ -43,13 +43,6 @@ resource "aws_security_group" "boundary_ingress_worker_ssh" {
     from_port   = 9202
     to_port     = 9202
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    from_port   = -1
-    to_port     = -1
-    protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 

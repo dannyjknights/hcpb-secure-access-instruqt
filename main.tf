@@ -45,5 +45,9 @@ provider "boundary" {
 }
 
 resource "random_pet" "unique_names" {
+}
 
+resource "random_string" "s3_unique_name" {
+  length  = 8
+  special = false
 }

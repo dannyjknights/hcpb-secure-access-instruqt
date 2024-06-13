@@ -21,7 +21,7 @@ resource "boundary_credential_store_vault" "vault_cred_store" {
 
 //Credential Library for Brokered DB Credentials
 resource "boundary_credential_library_vault" "vault_cred_lib" {
-  name                = "boundary-vault-credential-library"
+  name                = "boundary-vault-db-credential-library"
   description         = "Generate ephemeral DB credentials from Vault and broker to the end user for connectivity"
   credential_store_id = boundary_credential_store_vault.vault_cred_store.id
   path                = "database/creds/dba"
@@ -30,7 +30,7 @@ resource "boundary_credential_library_vault" "vault_cred_lib" {
 
 //Credential library for SSH injected credentials
 resource "boundary_credential_library_vault_ssh_certificate" "vault_ssh_cert" {
-  name                = "boundary-vault-ssh-certs"
+  name                = "boundary-vault-ssh-certs-library"
   description         = "Generate a public/private key and send to Vault to sign the SSH Certificate ready for application credential injection"
   credential_store_id = boundary_credential_store_vault.vault_cred_store.id
   path                = "ssh-client-signer/sign/boundary-client"

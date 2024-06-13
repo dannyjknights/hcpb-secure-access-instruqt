@@ -35,7 +35,7 @@ resource "boundary_target" "aws" {
     boundary_host_set_plugin.aws_dev.id,
   ]
   # enable_session_recording                   = true
-  # storage_bucket_id                          = aws_s3_bucket.boundary_session_recording_bucket.id
+  # storage_bucket_id                          = boundary_storage_bucket.boundary_storage_bucket.id
   injected_application_credential_source_ids = [boundary_credential_library_vault_ssh_certificate.vault_ssh_cert.id]
 }
 

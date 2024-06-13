@@ -2,7 +2,7 @@
 resource "boundary_host_catalog_static" "db_host_catalog" {
   scope_id    = boundary_scope.project.id
   name        = "AWS RDS Catalogue"
-  description = "AWS RDS Host Catalogue"
+  description = "AWS RDS Static Host Catalogue"
 }
 
 resource "boundary_host_static" "postgres_host" {
