@@ -1,4 +1,4 @@
-# Create an organisation scope within global, named "partner-demo-org"
+# Create an organisation scope within global, named "boundary-demo-org"
 # The global scope can contain multiple org scopes
 resource "boundary_scope" "org" {
   scope_id                 = "global"
@@ -8,7 +8,7 @@ resource "boundary_scope" "org" {
   auto_create_admin_role   = true
 }
 
-/* Create a project scope within the "partner-demo-org" organsiation
+/* Create a project scope within the "boundary-demo-org" organsiation
 Each org can contain multiple projects and projects are used to hold
 infrastructure-related resources
 */

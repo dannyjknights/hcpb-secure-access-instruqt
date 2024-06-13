@@ -9,7 +9,7 @@
 #     device_index         = 0
 #   }
 #   tags = {
-#     Name         = "new-partner-boundary-target",
+#     Name         = "new-boundary-demo-target",
 #     service-type = "database",
 #     application  = "dev",
 #   }
