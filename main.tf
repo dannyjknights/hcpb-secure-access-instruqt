@@ -34,6 +34,8 @@ provider "aws" {
 }
 
 provider "vault" {
+  address = var.vault_addr
+  token   = var.vault_token
 }
 
 # Declare the provider for the HashiCorp Boundary resource to be managed by Terraform
@@ -45,10 +47,5 @@ provider "boundary" {
 }
 
 resource "random_pet" "unique_names" {
-  length = 1
-}
-
-resource "random_string" "s3_unique_name" {
-  length  = 8
-  special = false
+  length = 3
 }

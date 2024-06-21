@@ -10,6 +10,10 @@ variable "password_auth_method_password" {
   type = string
 }
 
+variable "vault_addr" {
+  type = string
+}
+
 variable "aws_access" {
   type = string
 }
@@ -48,10 +52,6 @@ variable "availability_zone2" {
   description = "Second AZ for RDS deployment"
   type        = string
   default     = "eu-west-2c"
-}
-
-variable "vault_addr" {
-  type = string
 }
 
 variable "vault_token" {
