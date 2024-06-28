@@ -5,7 +5,7 @@
 #   user_data_base64  = data.cloudinit_config.ssh_trusted_ca.rendered
 
 #   network_interface {
-#     network_interface_id = aws_network_interface.boundary_public_target_ni.id
+#     network_interface_id = aws_network_interface.new_boundary_public_target_ni.id
 #     device_index         = 0
 #   }
 #   tags = {
