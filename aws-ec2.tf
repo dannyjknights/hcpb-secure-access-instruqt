@@ -9,7 +9,7 @@ resource "aws_instance" "boundary_public_target" {
     device_index         = 0
   }
   tags = {
-    Name         = "partner-boundary-target",
+    Name         = "demo-boundary-target",
     service-type = "database",
     application  = "dev",
   }
